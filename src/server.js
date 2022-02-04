@@ -1,6 +1,7 @@
 import http from "http";
 import WebSocket from "ws";
 import express from "express";
+import { Socket } from "dgram";
 
 const app = express()
 
@@ -19,17 +20,26 @@ const wss = new WebSocket.Server({ server });
 //     console.log(socket)
 // }
 
+const sockets = [];
+
+
 wss.on("connection", (socket) => {
+    sockets.push(socket);
+    socket["nickname"] = "Anon";
     // console.log(socket)
     console.log("Connected to Browser!");
     socket.on("close", () => {
         console.log("Disconnected from Browser!")
     });
-    socket.on("message", (message) => {
-        const translatedMessageData = message.toString('utf8');
-        console.log(translatedMessageData);
+    socket.on("message", (msg) => {
+        const message = JSON.parse(msg.toString("utf8"));
+        switch(message.type) {
+            case "message":
+                sockets.forEach(aSocket => aSocket.send(`${socket.nickname}: ${message.payload}`));
+            case "nickname":   
+                socket["nickname"] = message.payload;
+        }
     });
-    socket.send("hello!!!");
 });
 
 server.listen(3000, handleListen);
