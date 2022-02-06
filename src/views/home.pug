@@ -8,12 +8,24 @@ html(lang="en")
         link(rel="stylesheet", href="https://unpkg.com/mvp.css")
     body 
         header
-            h1 It works!
+            h1 Zoom
         main
             div#welcome
+                //- form#client
+                //-     input(placeholder="nickname", required, type="text")
+                //-     button Save
                 form
                     input(placeholder="room name", required, type="text")
                     button Enter Room
+            div#room
+                h3
+                ul
+                form#name
+                    input(placeholder="nickname", required, type="text")
+                    button Save
+                form#msg
+                    input(placeholder="message", required, type="text")
+                    button Send
             //- form#nickname
             //-     input(type="text", placeholder="Choose a Nickname", required)
             //-     button Save
